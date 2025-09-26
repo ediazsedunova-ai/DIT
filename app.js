@@ -107,12 +107,33 @@ function showRegistroForm(dni) {
 
 async function handleRegistro(e) {
     e.preventDefault();
-    
-    if (!document.getElementById('regPrivacidad').checked) {
-        showModal('Aceptación Requerida', 'Debe aceptar las políticas de privacidad para continuar.');
+
+    // --- Seguridad: comprobar que el checkbox existe ---
+    const privacidadEl = document.getElementById('regPrivacidad');
+    if (!privacidadEl) {
+        console.error('handleRegistro: No se encontró el elemento #regPrivacidad en el DOM.');
+        // Mensaje visible al usuario
+        try {
+            showModal('Error Interno', 'No se pudo validar la aceptación de políticas. Por favor refresca la página.');
+        } catch (err) {
+            alert('Error interno: No se encontró el checkbox de privacidad. Refresca la página.');
+        }
         return;
     }
 
+    // --- Validación explícita del checkbox (evita depender del required del navegador) ---
+    if (!privacidadEl.checked) {
+        console.warn('handleRegistro: el usuario intentó registrarse sin aceptar las políticas.');
+        try {
+            showModal('Aceptación Requerida', 'Debe aceptar las políticas de privacidad para continuar.');
+        } catch (err) {
+            // fallback si showModal falla por alguna razón
+            alert('Debe aceptar las políticas de privacidad para continuar.');
+        }
+        return;
+    }
+
+    // --- Si llega aquí, el checkbox existe y está marcado: procedemos con el registro ---
     const registerButton = e.target.querySelector('button[type="submit"]');
     setButtonLoading(registerButton, true, 'Registrando...');
 
@@ -123,29 +144,35 @@ async function handleRegistro(e) {
         celular: document.getElementById('regCelular').value,
         email: document.getElementById('regEmail').value,
         residencia: document.getElementById('regResidencia').value,
-        certificado: document.querySelector('input[name="tipoCertificado"]:checked').value,
+        certificado: (document.querySelector('input[name="tipoCertificado"]:checked') || {}).value || '',
         fecha_registro: new Date().toISOString().split('T')[0]
     };
 
-    const response = await postDataToGoogleSheet('registerUser', formData);
-    
-    if (response.status === 'success') {
-        const newUser = { ...formData, nombre_completo: `${formData.nombres} ${formData.apellidos}`, dni: formData.dni.toString() };
-        appData.nuevos_registros.push(newUser);
-        controlUnificado.push(newUser);
-        participantProgress[newUser.dni] = response.newProgress;
-        currentUser = newUser;
-        
+    try {
+        const response = await postDataToGoogleSheet('registerUser', formData);
+        if (response.status === 'success') {
+            const newUser = { ...formData, nombre_completo: `${formData.nombres} ${formData.apellidos}`, dni: formData.dni.toString() };
+            appData.nuevos_registros.push(newUser);
+            controlUnificado.push(newUser);
+            participantProgress[newUser.dni] = response.newProgress || createDefaultProgress(newUser.dni);
+            currentUser = newUser;
+
+            setButtonLoading(registerButton, false, 'Completar Registro');
+            showModal('Registro Exitoso', `¡Bienvenido(a) ${formData.nombres}!<br>Tu registro ha sido completado.`, () => {
+                 updateCertificationSteps();
+                 showSection('certificationSteps');
+            });
+        } else {
+            setButtonLoading(registerButton, false, 'Completar Registro');
+            showModal('Error de Registro', response.message || 'Respuesta inesperada del servidor.');
+        }
+    } catch (err) {
+        console.error('handleRegistro: error al enviar datos:', err);
         setButtonLoading(registerButton, false, 'Completar Registro');
-        showModal('Registro Exitoso', `¡Bienvenido(a) ${formData.nombres}!<br>Tu registro ha sido completado.`, () => {
-             updateCertificationSteps();
-             showSection('certificationSteps');
-        });
-    } else {
-        setButtonLoading(registerButton, false, 'Completar Registro');
-        showModal('Error de Registro', response.message);
+        showModal('Error de Registro', 'No se pudo completar el registro. Intente nuevamente.');
     }
 }
+
 
 
 function requestAccess(type) {
@@ -653,4 +680,5 @@ function showModal(title, message, callback) {
         if (callback) callback();
     };
 }
+
 
