@@ -137,9 +137,26 @@ async function handleRegistro(e) {
     };
 
     // Enviar datos al Google Sheet
-    const response = await postDataToGoog
+    const response = await postDataToGoogleSheet('registerUser', formData);
 
+setButtonLoading(registerButton, false);
 
+    if (response.status === 'success') {
+        showModal('Registro Exitoso', 'Su registro ha sido completado. Ahora puede continuar con el proceso.', () => {
+            // Agregar el nuevo registro a controlUnificado
+            controlUnificado.push({
+                ...formData,
+                nombre_completo: `${formData.nombres} ${formData.apellidos}`.trim()
+            });
+            currentUser = formData;
+            participantProgress[formData.dni] = createDefaultProgress(formData.dni);
+            updateCertificationSteps();
+            showSection('certificationSteps');
+        });
+    } else {
+        showModal('Error en Registro', response.message || 'No se pudo registrar al usuario. Inténtelo nuevamente.');
+    }
+}
 
 
 function requestAccess(type) {
@@ -647,6 +664,7 @@ function showModal(title, message, callback) {
         if (callback) callback();
     };
 }
+
 
 
 
