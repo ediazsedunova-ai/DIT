@@ -66,7 +66,10 @@ function showSection(sectionName) {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
-    document.getElementById('whatsappGroupBtn').style.display = (sectionName === 'certificationSteps' || sectionName === 'adminPanel') ? 'inline-flex' : 'none';
+    const showCommunityBtns = (sectionName === 'certificationSteps' || sectionName === 'adminPanel');
+document.getElementById('whatsappGroupBtn').style.display = showCommunityBtns ? 'inline-flex' : 'none';
+document.getElementById('facebookBtn').style.display = showCommunityBtns ? 'inline-flex' : 'none';
+
     const target = document.getElementById(sectionName);
     if (target) target.style.display = 'block';
 }
@@ -664,6 +667,7 @@ function showModal(title, message, callback) {
         if (callback) callback();
     };
 }
+
 
 
 
