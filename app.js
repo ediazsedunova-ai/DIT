@@ -630,21 +630,34 @@ function updateCertificateSection() {
 
         section.innerHTML = `
             <div class="certificate-card">
-                <h4><i class="fas fa-certificate"></i> ¡Certificación Completada!</h4>
+                <!-- Bloque principal -->
+                <h3><i class="fas fa-certificate"></i> ¡Certificación Completada!</h3>
                 <p>Su código de certificado es: <strong>${certCode}</strong></p>
-                <p>Su Certificado Digital Gratuito estará disponible para descarga en las próximas horas. Recibirá una notificación por correo y/o WhatsApp.</p>
-                <a href="${config.certificate_verification_link || '#'}" target="_blank" class="btn btn--success" style="margin-top: 10px;">
-                    <i class="fas fa-check-circle"></i> Verificar Certificado en la Web
-                </a>
+                <p>Su Certificado Digital Gratuito estará disponible para descarga en las próximas horas. 
+                   Recibirá una notificación por correo y/o WhatsApp.</p>
 
-                <div class="promo-section">
+                <!-- Botones -->
+                <div style="margin-top:15px; text-align:center;">
+                    <a href="${config.certificate_verification_link || '#'}" 
+                       target="_blank" class="btn btn--success" style="margin-right:10px;">
+                        <i class="fas fa-check-circle"></i> Verificar Certificado
+                    </a>
+                    <a href="https://www.facebook.com/EDUNOVAPE" target="_blank" class="btn btn--facebook">
+                        <i class="fab fa-facebook"></i> Síguenos en Facebook
+                    </a>
+                </div>
+
+                <!-- Bloque Opcional -->
+                <div class="promo-section" style="margin-top:25px;">
                     <h5>Opcional: Potencie su CV con el <strong>Certificado Físico con Triple Firma</strong></h5>
-                    <p>Por una inversión de promoción de <strong>S/${config.cert_fisico_precio || '40.00'}</strong>, asegure su certificado impreso con el respaldo de la Cámara de Comercio de Huánuco y el Colegio de Sociólogos del Perú.</p>
+                    <p>Por una inversión de promoción de <strong>S/${config.cert_fisico_precio || '40.00'}</strong>, 
+                       asegure su certificado impreso con el respaldo de la Cámara de Comercio de Huánuco y el Colegio de Sociólogos del Perú.</p>
                     <p><strong>¿Cómo solicitarlo?</strong><br>
-                    1. Realice el pago vía Yape al <strong>${config.yape_number || '994694751'}</strong> (Edunova Peru Sac).<br>
+                    1. Realice el pago vía Yape al <strong>${config.yape_number || '994694751'}</strong> (Edunova Perú SAC).<br>
                     2. Notifique su pago enviando el comprobante por WhatsApp.</p>
-                    <a href="https://wa.me/${contactNumber}?text=${text}" target="_blank" class="btn btn--primary" style="margin-top: 10px;">
-                        <i class="fab fa-whatsapp"></i> <strong>Solicitar Certificado Físico por WhatsApp</strong>
+                    <a href="https://wa.me/${contactNumber}?text=${text}" target="_blank" 
+                       class="btn btn--primary" style="margin-top: 10px;">
+                        <i class="fab fa-whatsapp"></i> <strong>Solicitar Certificado Físico</strong>
                     </a>
                 </div>
             </div>`;
@@ -653,6 +666,7 @@ function updateCertificateSection() {
         section.style.display = 'none'; 
     } 
 }
+
 
 function showSpinner(show) { document.getElementById('loadingSpinner').style.display = show ? 'flex' : 'none'; }
 function setupModalControls() { const m = document.getElementById('messageModal'); document.getElementById('modalConfirm').onclick = () => m.classList.add('hidden'); document.getElementById('closeModal').onclick = () => m.classList.add('hidden'); }
@@ -667,6 +681,7 @@ function showModal(title, message, callback) {
         if (callback) callback();
     };
 }
+
 
 
 
