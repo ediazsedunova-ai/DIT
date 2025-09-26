@@ -101,10 +101,17 @@
   <label class="checkbox-container">
     <input type="checkbox" id="regPrivacidad">
     <span class="checkmark"></span>
-    Acepto las Políticas de Privacidad 
-    <a id="privacyPolicyLink" href="https://edunova.edu.pe/privacy-policy/" target="_blank">(ver)</a>
+    <span id="privacyPolicyText">
+      Acepto las Políticas de Privacidad 
+      <a id="privacyPolicyLink" href="https://edunova.edu.pe/privacy-policy/" target="_blank">(ver)</a>
+    </span>
   </label>
+  <!-- Aquí aparece el error de forma discreta -->
+  <div id="privacyError" class="error-message" style="display: none; font-size: 0.85em; color: red; margin-top: 4px;">
+    Debe aceptar las políticas de privacidad para continuar.
+  </div>
 </div>
+
 
                             <div class="form-actions">
                                 <button type="button" id="backToLogin" class="btn btn--secondary">Cancelar</button>
@@ -191,6 +198,7 @@
     <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
