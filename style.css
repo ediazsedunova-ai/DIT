@@ -185,55 +185,47 @@ body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Ro
   background-color: #145dbf;
 }
 
-/* Botón Facebook */
+/* Botón Facebook versión móvil */
 .btn--facebook {
   background-color: #1877f2;
   color: #fff;
   border: none;
-  padding: 0.6rem 1.2rem;
-  font-size: 0.95rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
   text-decoration: none;
+  width: 100%; /* Ocupa todo el ancho disponible */
+  box-sizing: border-box;
+  margin-top: 10px;
 }
 
 .btn--facebook i {
-  margin-right: 6px;
+  margin-right: 8px;
 }
 
 .btn--facebook:hover {
   background-color: #145dbf;
 }
 
-/* Tarjeta de certificado */
+/* Mejorar la tarjeta en móviles */
 .certificate-card {
   background: #fff;
-  padding: 1.8rem;
+  padding: 1.2rem;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   margin-top: 20px;
 }
 
-/* Bloque de promoción opcional */
+/* Bloque de promoción más espacioso */
 .certificate-card .promo-section {
-  margin-top: 25px;
+  margin-top: 20px;
   padding: 15px;
   border-radius: 12px;
-  background: #f8f9fc;
-  border: 1px solid #e0e0e0;
-}
-
-.certificate-card .promo-section h5 {
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.certificate-card .promo-section p {
-  margin: 5px 0;
-  font-size: 0.95rem;
-  line-height: 1.4;
+  background: #f9fafc;
+  border: 1px solid #e6e6e6;
 }
