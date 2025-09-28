@@ -292,7 +292,7 @@ function renderStep1Content(container, submitFn) {
     container.innerHTML = `<p>Vea la grabación y escriba la palabra clave para validar.</p>
     <a href="${appData.configuracion.enlaces_grabaciones.sesion1}" target="_blank" class="btn btn--secondary">Ver Video Sesión 1</a>
     <form id="session1Form" class="form-group">
-        <input id="session1Code" class="form-control" placeholder="Palabra Clave Sesión 1" required style="margin-top:1rem;" maxlength="50">
+        <input id="session1Code" class="form-control" placeholder="Palabra Clave Sesión 1" required style="margin-top:1rem;" maxlength="">
         <div class="form-actions" style="justify-content: flex-start;"><button type="submit" class="btn btn--primary">Validar</button></div>
     </form>`;
     document.getElementById('session1Form').addEventListener('submit', submitFn);
@@ -320,7 +320,7 @@ function renderModuleContent(container, moduleIndex) {
                 <a href="${tema.lectura_url}" target="_blank" class="btn btn--secondary btn--sm">Leer artículo completo</a>
                 <div class="comment-form form-group">
                     <textarea class="form-control" id="comment_${tema.id}" 
-                              placeholder="Escriba su reflexión aquí (mínimo 50 caracteres)..." 
+                              placeholder="Escriba su reflexión aquí (mínimo 30 caracteres)..." 
                               maxlength="2000" 
                               oninput="updateCharCounter('comment_${tema.id}', 'counter_${tema.id}')">${progress.comments?.[tema.id] || ''}</textarea>
                     <div id="counter_${tema.id}" class="char-counter"></div>
@@ -341,7 +341,7 @@ function renderModuleContent(container, moduleIndex) {
         if (!progress.comments) progress.comments = {};
         module.temas.forEach(tema => {
             const comment = document.getElementById(`comment_${tema.id}`).value;
-            if (comment.trim().length < 50) {
+            if (comment.trim().length < 30) {
                 allValid = false;
             }
             progress.comments[tema.id] = comment;
@@ -350,7 +350,7 @@ function renderModuleContent(container, moduleIndex) {
             const stepKey = moduleIndex === 0 ? 'step2_completed' : 'step4_completed';
             await updateUserProgress(stepKey, true);
         } else {
-            showModal('Incompleto', 'Debe escribir una reflexión de al menos 50 caracteres para cada tema.');
+            showModal('Incompleto', 'Debe escribir una reflexión de al menos 30 caracteres para cada tema.');
             setButtonLoading(completeBtn, false, 'Guardar y Completar Módulo');
         }
     };
@@ -681,6 +681,7 @@ function showModal(title, message, callback) {
         if (callback) callback();
     };
 }
+
 
 
 
